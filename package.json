@@ -1,0 +1,61 @@
+{
+  "name": "subtle-key-codec",
+  "version": "1.0.0",
+  "description": "Encodes/Decodes WebCrypto keys efficiently and easily into `Uint8Array`s. Good when you want to safe space (QR Codes).",
+  "main": "index.js",
+  "module": "index.mjs",
+  "types": "types/index.d.ts",
+  "exports": {
+    "./index.js": {
+      "types": "./types/index.d.ts",
+      "import": "./index.mjs",
+      "require": "./index.js"
+    }
+  },
+  "scripts": {
+    "update-fixtures": "node test.fixtures_update.mjs && standard --fix test.fixtures.mjs",
+    "test": "npm run unit && npm run lint",
+    "test-cjs": "fresh-tape test.js",
+    "lint": "standard && dtslint types --localTs node_modules/typescript/lib",
+    "unit": "fresh-tape test.mjs",
+    "prepare": "npm run build",
+    "coverage": "c8 -r html -r text npm run unit",
+    "build": "esm2umd",
+    "browser-test": "browserify test.js | browser-run"
+  },
+  "browser": {
+    "./crypto.js": "./crypto.browser.js"
+  },
+  "keywords": [
+    "subtle",
+    "WebCrypto",
+    "codec",
+    "binary",
+    "buffer",
+    "Uint8Array"
+  ],
+  "author": "Martin Heidegger <martin.heidegger@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@definitelytyped/dtslint": "0.0.115",
+    "@leichtgewicht/esm2umd": "^0.4.0",
+    "browser-run": "^11.0.0",
+    "browserify": "^17.0.0",
+    "c8": "^7.11.3",
+    "fresh-tape": "^5.5.3",
+    "isomorphic-webcrypto": "^2.3.8",
+    "standard": "^17.0.0",
+    "typescript": "^4.7.3"
+  },
+  "dependencies": {
+    "@leichtgewicht/base64-codec": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martinheidegger/subtle-key-codec.git"
+  },
+  "bugs": {
+    "url": "https://github.com/martinheidegger/subtle-key-codec/issues"
+  },
+  "homepage": "https://github.com/martinheidegger/subtle-key-codec#readme"
+}

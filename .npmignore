@@ -1,0 +1,4 @@
+coverage
+test.fixtures_update.*
+*.tgz
+.github

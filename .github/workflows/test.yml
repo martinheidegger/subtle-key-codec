@@ -1,0 +1,64 @@
+name: Tests
+
+on: push
+
+jobs:
+  test_cjs:
+    strategy:
+      matrix:
+        include:
+          - id: ubuntu:8
+            os: ubuntu-latest
+            node: 8
+          - id: ubuntu:10
+            os: ubuntu-latest
+            node: 10
+    runs-on: ${{ matrix.os }}
+    needs: [test_mjs]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - run: npm i
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node }}
+    - run: npm rebuild --ignore-scripts
+    - run: npm run test-cjs
+
+  test_mjs:
+    strategy:
+      matrix:
+        include:
+          - id: windows:15
+            os: windows-latest
+            node: 15
+          - id: macos:16
+            os: macos-latest
+            node: 16
+          - id: ubuntu:17
+            os: ubuntu-latest
+            node: 17
+    runs-on: ${{ matrix.os }}
+    needs: [strict]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node }}
+    - run: npm i
+    - run: npm run test
+
+  strict:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: lts/*
+    - run: npm i
+    - run: npm run lint
+    - run: npm run coverage
+    - run: npm run test-cjs
+    - run: xvfb-run --auto-servernum npm run browser-test
